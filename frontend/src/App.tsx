@@ -14,13 +14,9 @@ const App = () => {
           Image Viewer
         </Typography>
         <Grid container spacing={4} justifyContent="center">
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12}>
             <Paper elevation={3} sx={{ p: 3 }}>
-              <ImagesUpload />
-            </Paper>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Paper elevation={3} sx={{ p: 3 }}>
+            <ImagesUpload />
               <ImageViewer />
             </Paper>
           </Grid>
