@@ -1,10 +1,12 @@
 import express from 'express';
-import type { Request, Response } from 'express';
+import type { Request } from 'express';
 import multer from 'multer';
-import path from 'path';
+import cors from 'cors';
+import fs from 'fs';
 
 const PORT = 3000;
 const app = express();
+app.use(cors());
 
 const storage = multer.diskStorage({
   destination:   (req, file, cb) => {
@@ -19,17 +21,26 @@ const upload = multer({ storage: storage });
 
 app.use(express.static('images'));
 
-// issue with types
-app.post('/upload', upload.array('images', 10), (req: any, res: any) => {
-  if (!req.files) {
+// issue with types for response
+app.post('/upload', upload.single('image'), (req: Request, res: any) => {
+  if (!req.file) {
     return res.status(400).json({ error: 'No files uploaded' });
   }
 
-  const imageUrls = (req.files as Express.Multer.File[]).map(file => {
-    return `http://localhost:${PORT}/${file.filename}`;
-  });
+  const imageUrl = `http://localhost:${PORT}/${req.file.filename}`;
 
-  return res.json({ imageUrls });
+  return res.json({ imageUrl });
+});
+
+app.get('/images', (req: Request, res: any) => {
+  fs.readdir('./images', (err, files) => {
+    if (err) {
+      return res.status(500).json({ error: 'Could not retrieve images' });
+    }
+
+    const imageUrls = files.map((file) => `http://localhost:${PORT}/${file}`);
+    res.json({ images: imageUrls });
+  });
 });
 
 app.listen(PORT, () => {
