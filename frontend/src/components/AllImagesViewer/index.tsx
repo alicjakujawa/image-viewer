@@ -1,24 +1,8 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Grid, Typography, Box } from '@mui/material';
-import { useImageContext } from 'src/contexts/ImageContext';
+import { useFetchImages } from 'src/hooks/useFetchImages';
 
 const AllImagesViewer = () => {
-  const [images, setImages] = useState<string[]>([]);
-  const { imageUrl } = useImageContext();
-
-  useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/images');
-        setImages(response.data.images);
-      } catch (error) {
-        console.error('Error fetching images:', error);
-      }
-    };
-
-    fetchImages();
-  }, [imageUrl]);
+  const images = useFetchImages();
 
   return (
     <Box sx={{ mt: 4 }}>

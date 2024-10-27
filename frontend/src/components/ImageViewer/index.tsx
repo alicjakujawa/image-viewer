@@ -5,8 +5,7 @@ export const ImageViewer = () => {
   const { imageUrl } = useImageContext();
 
   return (
-    <Container maxWidth="sm" style={{ textAlign: 'center', marginTop: '20px' }}>
-      <Typography variant="h6">Uploaded Image:</Typography>
+    <Container maxWidth="sm" style={{ textAlign: 'center' }}>
       {imageUrl ? (
         <Box>
           <img src={imageUrl} alt="Uploaded" style={{ maxWidth: '100%', maxHeight: '500px' }} />
