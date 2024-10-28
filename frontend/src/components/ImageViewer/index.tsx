@@ -5,30 +5,27 @@ import useImageManipulation from 'src/hooks/useImageManipulation';
 
 export const ImageViewer: React.FC = () => {
   const { imageUrl } = useImageContext();
-  const { rotation, scale, rotate, changeScale, reset } = useImageManipulation();
+  const { scale, rotate, changeScale, reset, canvasRef, setFlipHorizontal, setFlipVertical } = useImageManipulation(imageUrl);
 
   return (
     <Container maxWidth="md" style={{ textAlign: 'center' }}>
       {imageUrl ? (
-        <Box mt={15}>
-          <Box
-            component="img"
-            src={imageUrl}
-            alt="Uploaded"
-            style={{
-              maxWidth: '150px',
-              transform: `rotate(${rotation}deg) scale(${scale})`,
-              transition: 'transform 0.2s',
-              display: 'block',
-              margin: '0 auto',
-            }}
-          />
-          <Box mt={15}>
+        <Box>
+          <canvas ref={canvasRef} style={{ maxWidth: '100%', margin: '0 auto' }} />
+          <Box mt={2}>
             <Button variant="contained" color="primary" onClick={rotate} sx={{ mr: 2 }}>
               Rotate
             </Button>
             <Button variant="contained" color="secondary" onClick={reset}>
               Reset
+            </Button>
+          </Box>
+          <Box mt={2}>
+            <Button variant="contained" color="primary" onClick={() => setFlipHorizontal(prev => !prev)} sx={{ mr: 2 }}>
+              Flip Horizontal
+            </Button>
+            <Button variant="contained" color="secondary" onClick={() => setFlipVertical(prev => !prev)}>
+              Flip Vertical
             </Button>
           </Box>
           <Box mt={2}>
